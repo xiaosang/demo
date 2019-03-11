@@ -86,7 +86,7 @@
             <br/>&nbsp;
             付款日期：<span style="text-decoration: underline;">
                 <el-date-picker
-                v-model="payData"
+                v-model="payDate"
                 align="right"
                 type="date"
                 placeholder="选择日期"
@@ -107,7 +107,7 @@
             签订日期：
             <span style="text-decoration: underline;">
                 <el-date-picker
-                v-model="signingData"
+                v-model="signingDate"
                 align="right"
                 type="date"
                 placeholder="选择日期"
@@ -143,15 +143,12 @@ export default {
   name: 'Edit',
   data () {
     return {
-      signingData: '',
+      signingDate: '',
       name: '',
       payMethod: '',
-      payData: '',
+      payDate: '',
       expireDate: '',
       pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
           shortcuts: [{
             text: '今天',
             onClick(picker) {
@@ -192,14 +189,14 @@ export default {
             });
             return;
           }
-          if(this.payData == '') {
+          if(this.payDate == '') {
             this.$message({
                 message: '付款日期不可为空',
                 type: 'info'
             });
             return;
           }
-          if(this.signingData == '') {
+          if(this.signingDate == '') {
             this.$message({
                 message: '签订日期不可为空',
                 type: 'info'
@@ -214,15 +211,19 @@ export default {
             return;
           }
           this.loading = true;
-          axios.post("http://www.baidu.com", 
+          axios.post("contract/add", 
             {
                 name: this.name,
-                signingData: this.signingData,
+                signingDate: this.signingDate,
                 payMethod: this.payMethod,
-                payData: this.payData,
+                payDate: this.payDate,
                 expireDate: this.expireDate
             }).then((response) => {
                 this.loading = false;
+                this.$message({
+                    message: response.data.info,
+                    type: response.data.msg
+                });
             }).catch(()=>{
             this.$message({
                 message: '请求失败',

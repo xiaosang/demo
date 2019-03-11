@@ -10,7 +10,12 @@
 // +----------------------------------------------------------------------
 use \think\Route;
 
-Route::get('ss','index/index');
+Route::get('/','index/index');
+Route::get('/show/:id','index/show');
+Route::post('/contract/add','contract/add');
+Route::get('/contract/get','contract/index');
+Route::get('/contract/expire','contract/expireMotion');
+
 // return [
 //     '__pattern__' => [
 //         'name' => '\w+',

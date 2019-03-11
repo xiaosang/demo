@@ -18,8 +18,11 @@
             </el-table-column>
             <el-table-column
             align="center"
-                prop="signing_data"
+                prop="signing_date"
                 label="签订日期">
+                <template slot-scope="scope">
+                    {{ dateFtt('yyyy-MM-dd',scope.row.signing_date) }}
+                </template>
             </el-table-column>
             <el-table-column
             align="center"
@@ -30,11 +33,25 @@
             align="center"
                 prop="pay_date"
                 label="付款日期">
+                <template slot-scope="scope">
+                    {{ dateFtt('yyyy-MM-dd',scope.row.pay_date) }}
+                </template>
             </el-table-column>
             <el-table-column
             align="center"
                 prop="expire_date"
                 label="截止日期">
+                <template slot-scope="scope">
+                    {{ dateFtt('yyyy-MM-dd',scope.row.expire_date) }}
+                </template>
+            </el-table-column>
+            <el-table-column
+            fixed="right"
+            label="操作"
+            width="50">
+            <template slot-scope="scope">
+                <el-button @click="show(scope.row.id)" type="text" size="small">查看</el-button>
+            </template>
             </el-table-column>
             </el-table>
 
@@ -47,7 +64,7 @@
             :page-size="pagination.pageSize"
             :current-page="pagination.page"
             layout="total, sizes, prev, pager, next"
-            :total="1000">
+            :total="pagination.total">
 </el-pagination>
         </div>
   </div>
@@ -62,11 +79,30 @@ export default {
       loading: false,
       pagination: {
           pageSize: 100,
-          page: 1
+          page: 1,
+          total: 0,
       }
     }
   },
   methods: {
+        dateFtt(fmt,time) {
+            let date = new Date(time * 1000);
+            var o = {   
+                "M+" : date.getMonth()+1,                 //月份
+                "d+" : date.getDate(),                    //日
+                "h+" : date.getHours(),                   //小时
+                "m+" : date.getMinutes(),                 //分
+                "s+" : date.getSeconds(),                 //秒
+                "q+" : Math.floor((date.getMonth()+3)/3), //季度
+                "S"  : date.getMilliseconds()             //毫秒
+            };   
+            if(/(y+)/.test(fmt))
+                fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));   
+            for(var k in o)
+                if(new RegExp("("+ k +")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+            return fmt;
+        },
       handleSizeChange(val) {
           this.pagination.pageSize = val;
       },
@@ -75,13 +111,10 @@ export default {
       },
       getList() {
           this.loading = true;
-          axios.post("http://www.baidu.com", 
-            {
-                signingData: this.signingData,
-                payMethod: this.payMethod,
-                payData: this.payData
-            }).then((response) => {
+          axios.get("contract/get", this.pagination).then((response) => {
                 this.loading = false;
+                this.tableData = response.data.info.data;
+                this.pagination.total = response.data.info.total;
             }).catch(()=>{
             this.$message({
                 message: '请求失败',
@@ -89,9 +122,15 @@ export default {
             });
           });
       },
+      show(index) {
+          window.location.href = '/show/' + index;
+      },
       add() {
           this.$router.push('/edit');
       }
+  },
+  mounted: function() {
+      this.getList();
   }
 }
 </script>

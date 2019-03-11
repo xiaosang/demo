@@ -15,7 +15,7 @@
  * 合同模板
  * @return string
  */
-function htmlTemplate($name = '', $signingData = '', $payMethod = '', $payData = '', $expireData = '') {
+function htmlTemplate($name = '', $payMethod = '', $payData = '', $signingData = '', $expireData = '') {
     $str = '';
     for($i = 0;$i < 20;$i++) {
         $str .= '&nbsp;';
