@@ -15,7 +15,7 @@
  * 合同模板
  * @return string
  */
-function htmlTemplate($name = '', $payMethod = '', $payData = '', $signingData = '', $expireData = '') {
+function htmlTemplate($name = '', $payMethod = '', $payDate = '', $signingDate = '', $expireDate = '') {
     $str = '';
     for($i = 0;$i < 20;$i++) {
         $str .= '&nbsp;';
@@ -25,20 +25,20 @@ function htmlTemplate($name = '', $payMethod = '', $payData = '', $signingData =
         $name = $str;
     }
 
-    if(empty($signingData)) {
-        $signingData = $str;
+    if(empty($signingDate)) {
+        $signingDate = $str;
     }
 
     if(empty($payMethod)) {
         $payMethod = $str;
     }
 
-    if(empty($payData)) {
-        $payData = $str;
+    if(empty($payDate)) {
+        $payDate = $str;
     }
 
-    if(empty($expireData)) {
-        $expireData = $str;
+    if(empty($expireDate)) {
+        $expireDate = $str;
     }
     return '
         <div style="width: 100%;">
@@ -116,7 +116,7 @@ function htmlTemplate($name = '', $payMethod = '', $payData = '', $signingData =
                 第二条、交（提）货方式、付款方式、付款日期： <br/> &nbsp; 交（提）货 方式：买方到卖方指定仓库自提，出库费用及货权移交后的仓储费用由买方负责。<br/> &nbsp;
                 付款方式：<span style="text-decoration: underline;">' . $payMethod . '</span>
                 <br/>&nbsp;
-                付款日期：<span style="text-decoration: underline;">' . $payData . '</span><br/>
+                付款日期：<span style="text-decoration: underline;">' . $payDate . '</span><br/>
                 第三条、 质量、包装标准：以《中华人民共和国国家标准》为准。<br/>
                 第四条、合理损耗标准及计算方法：允许合理磅差±2‰，超出合理磅差范围部分由买卖双方协商解决，交货尾差±5%，卖方提供相对应的生产厂出厂磅码单，按磅码单抄码重量结算。<br/>
                 第五条、检验标准、方法、地点及期限：按国家标准验收。如有异议，买方须在收货七天内提出，同时买方应保存异议货品留待卖方或第三方鉴定处理。<br/>
@@ -127,11 +127,11 @@ function htmlTemplate($name = '', $payMethod = '', $payData = '', $signingData =
             </p>
             <p style="margin: 13px 0;font-family: 宋体;font-size: 18px;line-height: 30px;text-align: right;">
             签订日期：
-            <span style="text-decoration: underline;">' . $signingData . '</span>
+            <span style="text-decoration: underline;">' . $signingDate . '</span>
             </p>
             <p style="margin: 13px 0;font-family: 宋体;font-size: 18px;line-height: 30px;text-align: right;">
             截止日期：
-            <span style="text-decoration: underline;">' . $expireData . '</span>
+            <span style="text-decoration: underline;">' . $expireDate . '</span>
             </p>
         </div>
     ';
