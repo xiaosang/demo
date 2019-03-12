@@ -1,8 +1,8 @@
 <template>
   <div>
         <div class="list">
-            <el-button icon="el-icon-plus" type="primary" @click="add" plain :loading="loading">新 建</el-button>
-
+            <el-button icon="el-icon-plus" type="primary" @click="add" plain>新 建</el-button>
+            <el-button type="info" @click="template" plain>查看模板</el-button>
             <el-table
             :data="tableData"
             style="width: 100%;margin-top: 20px;" v-loading="loading">
@@ -105,9 +105,11 @@ export default {
         },
       handleSizeChange(val) {
           this.pagination.pageSize = val;
+          this.getList();
       },
       handleCurrentChange(val) {
           this.pagination.page = val;
+          this.getList();
       },
       getList() {
           this.loading = true;
@@ -124,6 +126,9 @@ export default {
       },
       show(index) {
           window.location.href = '/show/' + index;
+      },
+      template() {
+          window.location.href = '/show/0';
       },
       add() {
           this.$router.push('/edit');
